@@ -2280,8 +2280,25 @@ Result WastParser::ParseResultList(TypeVector* result_types,
   return ParseUnboundValueTypeList(TokenType::Result, result_types, type_vars);
 }
 
+Result WastParser::CheckNestingDepth() {
+  if (nesting_depth_ > kMaxNestingDepth) {
+    // Exceeding the limit is not recoverable: the error is reported once and
+    // the flag stops the callers below from resynchronizing and walking back
+    // into the same too-deep input, which would report it once per level.
+    if (!nesting_limit_hit_) {
+      nesting_limit_hit_ = true;
+      Error(GetLocation(), "instruction nesting depth exceeds max of %d",
+            kMaxNestingDepth);
+    }
+    return Result::Error;
+  }
+  return Result::Ok;
+}
+
 Result WastParser::ParseInstrList(ExprList* exprs) {
   WABT_TRACE(ParseInstrList);
+  NestingGuard nesting_guard(this);
+  CHECK_RESULT(CheckNestingDepth());
   ExprList new_exprs;
   while (true) {
     auto pair = PeekPair();
@@ -2289,6 +2306,9 @@ Result WastParser::ParseInstrList(ExprList* exprs) {
       if (Succeeded(ParseInstr(&new_exprs))) {
         exprs->splice(exprs->end(), new_exprs);
       } else {
+        if (nesting_limit_hit_) {
+          return Result::Error;
+        }
         CHECK_RESULT(Synchronize(IsInstr));
       }
     } else if (IsLparAnn(pair)) {
@@ -3432,11 +3452,16 @@ Result WastParser::ParseBlock(Block* block) {
 
 Result WastParser::ParseExprList(ExprList* exprs) {
   WABT_TRACE(ParseExprList);
+  NestingGuard nesting_guard(this);
+  CHECK_RESULT(CheckNestingDepth());
   ExprList new_exprs;
   while (PeekMatchExpr()) {
     if (Succeeded(ParseExpr(&new_exprs))) {
       exprs->splice(exprs->end(), new_exprs);
     } else {
+      if (nesting_limit_hit_) {
+        return Result::Error;
+      }
       CHECK_RESULT(Synchronize(IsExpr));
     }
   }

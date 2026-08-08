@@ -315,11 +315,35 @@ class WastParser {
   bool HasError() const;
   bool CheckRefType(Type::Enum type);
   void VarToType(const Var& var, Type* type);
+  Result CheckNestingDepth();
+
+  // Unlike the binary reader, which tracks nesting with an explicit label
+  // stack, this parser is recursive descent: every level of nested
+  // instructions costs several stack frames. The limit is therefore much
+  // lower than BinaryReaderIR's kMaxNestingDepth, and is chosen to stay
+  // within the smallest default stack we build against (1MB on MSVC).
+  static constexpr int kMaxNestingDepth = 1000;
+
+  // Increments the parser's nesting depth for as long as it is in scope.
+  class NestingGuard {
+   public:
+    explicit NestingGuard(WastParser* parser) : parser_(parser) {
+      ++parser_->nesting_depth_;
+    }
+    ~NestingGuard() { --parser_->nesting_depth_; }
+    NestingGuard(const NestingGuard&) = delete;
+    NestingGuard& operator=(const NestingGuard&) = delete;
+
+   private:
+    WastParser* parser_;
+  };
 
   WastLexer* lexer_;
   Index last_module_index_ = kInvalidIndex;
   Errors* errors_;
   WastParseOptions* options_;
+  int nesting_depth_ = 0;
+  bool nesting_limit_hit_ = false;
 
   // Reference types can have names or indicies. For example (ref $foo)
   // represents a type which name is $foo, and (ref 5) represents

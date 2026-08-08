@@ -1,0 +1,112 @@
+;;; TOOL: wat2wasm
+;;; ERROR: 1
+;; Deeply nested blocks used to overflow the stack while parsing;
+;; the parser now reports the nesting limit instead. See #2377.
+(module (func
+(block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block 
+(block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block 
+(block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block 
+(block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block 
+(block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block 
+(block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block 
+(block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block 
+(block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block 
+(block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block 
+(block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block 
+(block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block 
+(block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block 
+(block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block 
+(block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block 
+(block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block 
+(block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block 
+(block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block 
+(block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block 
+(block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block 
+(block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block 
+(block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block 
+(block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block 
+(block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block 
+(block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block 
+(block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block 
+(block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block 
+(block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block 
+(block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block 
+(block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block 
+(block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block 
+(block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block 
+(block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block 
+(block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block 
+(block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block 
+(block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block 
+(block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block 
+(block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block 
+(block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block 
+(block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block 
+(block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block 
+(block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block 
+(block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block 
+(block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block 
+(block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block 
+(block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block 
+(block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block 
+(block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block 
+(block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block 
+(block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block 
+(block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block (block 
+nop
+))))))))))))))))))))
+))))))))))))))))))))
+))))))))))))))))))))
+))))))))))))))))))))
+))))))))))))))))))))
+))))))))))))))))))))
+))))))))))))))))))))
+))))))))))))))))))))
+))))))))))))))))))))
+))))))))))))))))))))
+))))))))))))))))))))
+))))))))))))))))))))
+))))))))))))))))))))
+))))))))))))))))))))
+))))))))))))))))))))
+))))))))))))))))))))
+))))))))))))))))))))
+))))))))))))))))))))
+))))))))))))))))))))
+))))))))))))))))))))
+))))))))))))))))))))
+))))))))))))))))))))
+))))))))))))))))))))
+))))))))))))))))))))
+))))))))))))))))))))
+))))))))))))))))))))
+))))))))))))))))))))
+))))))))))))))))))))
+))))))))))))))))))))
+))))))))))))))))))))
+))))))))))))))))))))
+))))))))))))))))))))
+))))))))))))))))))))
+))))))))))))))))))))
+))))))))))))))))))))
+))))))))))))))))))))
+))))))))))))))))))))
+))))))))))))))))))))
+))))))))))))))))))))
+))))))))))))))))))))
+))))))))))))))))))))
+))))))))))))))))))))
+))))))))))))))))))))
+))))))))))))))))))))
+))))))))))))))))))))
+))))))))))))))))))))
+))))))))))))))))))))
+))))))))))))))))))))
+))))))))))))))))))))
+))))))))))))))))))))
+))
+(;; STDERR ;;;
+out/test/parse/expr/bad-nesting-depth.txt:56:1: error: instruction nesting depth exceeds max of 1000
+nop
+^^^
+;;; STDERR ;;)

@@ -2297,7 +2297,7 @@ Result WastParser::CheckNestingDepth() {
 
 Result WastParser::ParseInstrList(ExprList* exprs) {
   WABT_TRACE(ParseInstrList);
-  NestingGuard nesting_guard(this);
+  NestingGuard nesting_guard(*this);
   CHECK_RESULT(CheckNestingDepth());
   ExprList new_exprs;
   while (true) {
@@ -3452,7 +3452,7 @@ Result WastParser::ParseBlock(Block* block) {
 
 Result WastParser::ParseExprList(ExprList* exprs) {
   WABT_TRACE(ParseExprList);
-  NestingGuard nesting_guard(this);
+  NestingGuard nesting_guard(*this);
   CHECK_RESULT(CheckNestingDepth());
   ExprList new_exprs;
   while (PeekMatchExpr()) {

@@ -317,25 +317,26 @@ class WastParser {
   void VarToType(const Var& var, Type* type);
   Result CheckNestingDepth();
 
-  // Unlike the binary reader, which tracks nesting with an explicit label
-  // stack, this parser is recursive descent: every level of nested
-  // instructions costs several stack frames. The limit is therefore much
-  // lower than BinaryReaderIR's kMaxNestingDepth, and is chosen to stay
-  // within the smallest default stack we build against (1MB on MSVC).
-  static constexpr int kMaxNestingDepth = 1000;
+  // Unlike the binary reader, which tracks nesting in an explicit label stack,
+  // this parser is recursive descent: every level of nested instructions costs
+  // several stack frames, so the limit has to be far below BinaryReaderIR's
+  // kMaxNestingDepth. Measured at ~600 bytes per level for a gcc debug build;
+  // msvc debug builds are more expensive still, where 1000 levels overflowed
+  // the default 1MB stack. This leaves room for that and is still well above
+  // what real modules use: across the spec testsuite and wabt's own tests
+  // (~19k modules) the deepest is 80 and the 99th percentile is 3.
+  static constexpr int kMaxNestingDepth = 128;
 
   // Increments the parser's nesting depth for as long as it is in scope.
-  class NestingGuard {
-   public:
-    explicit NestingGuard(WastParser* parser) : parser_(parser) {
-      ++parser_->nesting_depth_;
+  struct NestingGuard {
+    explicit NestingGuard(WastParser& parser) : parser_(parser) {
+      ++parser_.nesting_depth_;
     }
-    ~NestingGuard() { --parser_->nesting_depth_; }
+    ~NestingGuard() { --parser_.nesting_depth_; }
     NestingGuard(const NestingGuard&) = delete;
     NestingGuard& operator=(const NestingGuard&) = delete;
 
-   private:
-    WastParser* parser_;
+    WastParser& parser_;
   };
 
   WastLexer* lexer_;

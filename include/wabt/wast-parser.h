@@ -320,12 +320,15 @@ class WastParser {
   // Unlike the binary reader, which tracks nesting in an explicit label stack,
   // this parser is recursive descent: every level of nested instructions costs
   // several stack frames, so the limit has to be far below BinaryReaderIR's
-  // kMaxNestingDepth. Measured at ~600 bytes per level for a gcc debug build;
-  // msvc debug builds are more expensive still, where 1000 levels overflowed
-  // the default 1MB stack. This leaves room for that and is still well above
-  // what real modules use: across the spec testsuite and wabt's own tests
-  // (~19k modules) the deepest is 80 and the 99th percentile is 3.
-  static constexpr int kMaxNestingDepth = 128;
+  // kMaxNestingDepth. Measured at ~600 bytes per level for a gcc debug build,
+  // and msvc debug builds are more expensive still -- 1000 levels overflowed
+  // the default 1MB stack there.
+  //
+  // Real modules do get reasonably deep, so this is not as generous as it
+  // looks: round-tripping sqlite built with emscripten needs 320, and resvg
+  // built with wasm-pack needs 192. Deeper than this can no longer be read
+  // back, but it could not be before either -- it faulted instead.
+  static constexpr int kMaxNestingDepth = 512;
 
   // Increments the parser's nesting depth for as long as it is in scope.
   struct NestingGuard {

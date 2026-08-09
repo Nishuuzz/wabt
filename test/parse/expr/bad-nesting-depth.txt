@@ -21,3 +21,8 @@ nop
 ))))))))))))))))
 ))))))))))))))))
 ))
+(;; STDERR ;;;
+out/test/parse/expr/bad-nesting-depth.txt:14:1: error: instruction nesting depth exceeds max of 128
+nop
+^^^
+;;; STDERR ;;)
